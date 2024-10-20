@@ -82,9 +82,6 @@ public class EmployeeController {
         Objects.isNull(employee.getJobTitle()) || Objects.isNull(employee.getStatus())) {
             return false;
         }
-        if(employee.getFirstName().length() > 20 || employee.getLastName().length() > 20) {
-            return false;
-        }
-        return true;
+        return employee.getFirstName().length() < 20 && employee.getLastName().length() < 20;
     }
 }
