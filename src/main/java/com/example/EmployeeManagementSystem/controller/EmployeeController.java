@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import static com.example.EmployeeManagementSystem.validator.EmployeeValidator.validEmployee;
 
 @RestController
 @RequestMapping("/api")
@@ -19,6 +20,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    /*Create Employee*/
     @PostMapping("/employee")
     public Employee addEmployee(@RequestBody Employee employee) {
         if(validEmployee(employee)){
@@ -27,6 +29,7 @@ public class EmployeeController {
         throw new EmployeeIncorrectFormatException("Incorrect Employee Format");
     }
 
+    /*Create Multiple Employees*/
     @PostMapping("/employees")
     public ResponseEntity<List<Employee>> addEmployees(@RequestBody List<Employee> employees) {
         List<Employee> employeeList = new ArrayList<>();
@@ -40,6 +43,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeList);
     }
 
+    /*Get Employee by ID*/
     @GetMapping("/employee/{id}")
     public ResponseEntity<Employee> getEmployee(@PathVariable int id) {
         try{
@@ -50,11 +54,13 @@ public class EmployeeController {
         }
     }
 
+    /*Get All Employees */
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getEmployees() {
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
+    /*Update Employee */
     @PutMapping("/employee/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable int id, @RequestBody Employee employee) {
         Employee updatedEmployee;
@@ -66,6 +72,7 @@ public class EmployeeController {
         return ResponseEntity.ok(updatedEmployee);
     }
 
+    /*Delete Employee */
     @DeleteMapping("/employee/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable int id) {
         try{
@@ -74,14 +81,5 @@ public class EmployeeController {
         } catch (Exception e) {
             throw new EmployeeNotFoundException("Employee "+ id +" Not Found");
         }
-    }
-
-    private boolean validEmployee(Employee employee) {
-        if(Objects.isNull(employee.getFirstName()) || Objects.isNull(employee.getLastName()) ||
-        Objects.isNull(employee.getEmail()) || Objects.isNull(employee.getDepartment()) ||
-        Objects.isNull(employee.getJobTitle()) || Objects.isNull(employee.getStatus())) {
-            return false;
-        }
-        return employee.getFirstName().length() < 20 && employee.getLastName().length() < 20;
     }
 }
