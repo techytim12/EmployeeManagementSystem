@@ -1,6 +1,7 @@
 package com.example.EmployeeManagementSystem.service;
 
-import com.example.EmployeeManagementSystem.entity.Employee;
+import com.example.EmployeeManagementSystem.enums.EmployeeStatus;
+import com.example.EmployeeManagementSystem.model.Employee;
 import com.example.EmployeeManagementSystem.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+    public List<Employee> getAllEmployees(String department, EmployeeStatus status) {
+        if(Objects.isNull(department) && Objects.isNull(status)){
+            return employeeRepository.findAll();
+        }
+
+        // combinations of department & status logic
+        if(Objects.nonNull(department) && Objects.nonNull(status)){
+            return employeeRepository.findByDepartmentAndStatus(department, status);
+        } else if (Objects.nonNull(status)) {
+            return employeeRepository.findByStatus(status);
+        } else {
+            return employeeRepository.findByDepartment(department);
+        }
     }
 }

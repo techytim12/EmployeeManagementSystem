@@ -1,4 +1,4 @@
-package com.example.EmployeeManagementSystem.entity;
+package com.example.EmployeeManagementSystem.model;
 
 import com.example.EmployeeManagementSystem.enums.EmployeeStatus;
 import jakarta.persistence.*;
