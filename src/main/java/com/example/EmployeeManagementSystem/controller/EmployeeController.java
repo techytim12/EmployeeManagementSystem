@@ -37,7 +37,6 @@ public class EmployeeController {
         for(Employee employee : employees){
             if(validEmployee(employee)){
                 employeeList.add(employeeService.addEmployee(employee));
-                Thread.sleep(1000);
             } else {
                 throw new EmployeeIncorrectFormatException("Incorrect Employee Format");
             }
