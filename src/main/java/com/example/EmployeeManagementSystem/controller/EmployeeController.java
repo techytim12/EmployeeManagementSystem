@@ -1,6 +1,7 @@
 package com.example.EmployeeManagementSystem.controller;
 
-import com.example.EmployeeManagementSystem.entity.Employee;
+import com.example.EmployeeManagementSystem.enums.EmployeeStatus;
+import com.example.EmployeeManagementSystem.model.Employee;
 import com.example.EmployeeManagementSystem.exception.EmployeeIncorrectFormatException;
 import com.example.EmployeeManagementSystem.exception.EmployeeNotFoundException;
 import com.example.EmployeeManagementSystem.service.EmployeeService;
@@ -31,11 +32,12 @@ public class EmployeeController {
 
     /*Create Multiple Employees*/
     @PostMapping("/employees")
-    public ResponseEntity<List<Employee>> addEmployees(@RequestBody List<Employee> employees) {
+    public ResponseEntity<List<Employee>> addEmployees(@RequestBody List<Employee> employees) throws InterruptedException {
         List<Employee> employeeList = new ArrayList<>();
         for(Employee employee : employees){
             if(validEmployee(employee)){
                 employeeList.add(employeeService.addEmployee(employee));
+                Thread.sleep(1000);
             } else {
                 throw new EmployeeIncorrectFormatException("Incorrect Employee Format");
             }
@@ -56,8 +58,9 @@ public class EmployeeController {
 
     /*Get All Employees */
     @GetMapping("/employees")
-    public ResponseEntity<List<Employee>> getEmployees() {
-        return ResponseEntity.ok(employeeService.getAllEmployees());
+    public ResponseEntity<List<Employee>> getEmployees(@RequestParam(required = false) String department,
+                                                       @RequestParam(required = false)EmployeeStatus status) {
+        return ResponseEntity.ok(employeeService.getAllEmployees(department, status));
     }
 
     /*Update Employee */

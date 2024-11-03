@@ -1,6 +1,6 @@
 package com.example.EmployeeManagementSystem.validator;
 
-import com.example.EmployeeManagementSystem.entity.Employee;
+import com.example.EmployeeManagementSystem.model.Employee;
 
 import java.util.Objects;
 
